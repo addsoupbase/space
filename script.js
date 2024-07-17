@@ -76,10 +76,12 @@ function Update() {
             let poke = new Anim({ x: choose(-100, canvas.width + 100), y: 300, shape: choose(...sprites) })
             poke.velocity.x = choose(-Math.sign(poke.x))
             poke.velocity.y = choose(-1, 1, 0)
+            poke.layer = 1
         }
         else {
             let poke = new Anim({ x: Math.random() * canvas.width, y: -100, shape: choose(...sprites) })
             poke.velocity.y = choose(1)
+            poke.layer = 1
         }
     }
 
@@ -88,6 +90,7 @@ function Update() {
         all.splice(all.indexOf(o), 1)
     }
     toKill = []
+    all.sort((a,b)=>a.layer-b.layer)
     for (let o of all) {
         if (!(frame % 8)) {
             o.frame++
@@ -254,6 +257,7 @@ function Anim(opts) {
     this.frame = 1
     this.opacity = opacity ?? 1
     this.index = 0
+    this.layer = 0
     this.age = frame
     this.velocity = {
         x: 0,
